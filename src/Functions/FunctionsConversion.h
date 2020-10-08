@@ -920,7 +920,7 @@ struct ConvertImpl<DataTypeString, DataTypeUInt32, NameToUnixTimestamp>
 template <typename T, typename Name>
 struct ConvertImpl<std::enable_if_t<!T::is_parametric, T>, T, Name>
 {
-    static void execute(Block & block, const ColumnNumbers & arguments, size_t result, size_t /*input_rows_count*/)
+    static void execute(FunctionArguments & block, const ColumnNumbers & arguments, size_t result, size_t /*input_rows_count*/)
     {
         block.getByPosition(result).column = block.getByPosition(arguments[0]).column;
     }
@@ -933,7 +933,7 @@ struct ConvertImpl<std::enable_if_t<!T::is_parametric, T>, T, Name>
 template <typename Name>
 struct ConvertImpl<DataTypeFixedString, DataTypeString, Name>
 {
-    static void execute(Block & block, const ColumnNumbers & arguments, size_t result, size_t /*input_rows_count*/)
+    static void execute(FunctionArguments & block, const ColumnNumbers & arguments, size_t result, size_t /*input_rows_count*/)
     {
         if (const ColumnFixedString * col_from = checkAndGetColumn<ColumnFixedString>(block.getByPosition(arguments[0]).column.get()))
         {
