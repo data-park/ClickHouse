@@ -224,7 +224,7 @@ public:
 
     bool isDeterministic() const override { return function->isDeterministic(); }
     bool isDeterministicInScopeOfQuery() const override { return function->isDeterministicInScopeOfQuery(); }
-    bool isInjective(const DB::Block &block) const override { return function->isInjective(block); }
+    bool isInjective(const ColumnsWithTypeAndName & columns) const override { return function->isInjective(columns); }
 
     String getName() const override { return function->getName(); }
     bool isStateful() const override { return function->isStateful(); }
