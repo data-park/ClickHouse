@@ -166,7 +166,7 @@ private:
         String key;
     };
 
-    static std::vector<Move> prepareMoves(const char * function_name, Block & block, const ColumnNumbers & arguments, size_t first_index_argument, size_t num_index_arguments);
+    static std::vector<Move> prepareMoves(const char * function_name, FunctionArguments & block, const ColumnNumbers & arguments, size_t first_index_argument, size_t num_index_arguments);
 
     /// Performs moves of types MoveType::Index and MoveType::ConstIndex.
     template <typename JSONParser>
