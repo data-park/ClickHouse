@@ -1171,6 +1171,7 @@ class FunctionBinaryArithmeticWithConstants : public FunctionBinaryArithmetic<Op
 public:
     using Base = FunctionBinaryArithmetic<Op, Name, valid_on_default_arguments>;
     using Monotonicity = typename Base::Monotonicity;
+    using Block = typename Base::Block;
 
     static FunctionPtr create(
         const ColumnWithTypeAndName & left_,
@@ -1194,21 +1195,25 @@ public:
     {
         if (left.column && isColumnConst(*left.column) && arguments.size() == 1)
         {
-            Block block_with_constant
+            ColumnsWithTypeAndName block_with_constant
                 = {{left.column->cloneResized(input_rows_count), left.type, left.name},
                    block.getByPosition(arguments[0]),
                    block.getByPosition(result)};
-            Base::executeImpl(block_with_constant, {0, 1}, 2, input_rows_count);
-            block.getByPosition(result) = block_with_constant.getByPosition(2);
+
+            FunctionArguments args(block_with_constant);
+            Base::executeImpl(args, {0, 1}, 2, input_rows_count);
+            block.getByPosition(result) = block_with_constant[2];
         }
         else if (right.column && isColumnConst(*right.column) && arguments.size() == 1)
         {
-            Block block_with_constant
+            ColumnsWithTypeAndName block_with_constant
                 = {block.getByPosition(arguments[0]),
                    {right.column->cloneResized(input_rows_count), right.type, right.name},
                    block.getByPosition(result)};
-            Base::executeImpl(block_with_constant, {0, 1}, 2, input_rows_count);
-            block.getByPosition(result) = block_with_constant.getByPosition(2);
+
+            FunctionArguments args(block_with_constant);
+            Base::executeImpl(args, {0, 1}, 2, input_rows_count);
+            block.getByPosition(result) = block_with_constant[2];
         }
         else
             Base::executeImpl(block, arguments, result, input_rows_count);
