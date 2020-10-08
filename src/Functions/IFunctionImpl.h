@@ -31,6 +31,8 @@ using ExecutableFunctionLowCardinalityResultCachePtr = std::shared_ptr<Executabl
 class IExecutableFunctionImpl
 {
 public:
+    using Block = FunctionArguments;
+
     virtual ~IExecutableFunctionImpl() = default;
 
     virtual String getName() const = 0;
@@ -82,6 +84,8 @@ using ExecutableFunctionImplPtr = std::unique_ptr<IExecutableFunctionImpl>;
 class IFunctionBaseImpl
 {
 public:
+    using Block = FunctionArguments;
+
     virtual ~IFunctionBaseImpl() = default;
 
     virtual String getName() const = 0;
@@ -125,6 +129,8 @@ using FunctionBaseImplPtr = std::unique_ptr<IFunctionBaseImpl>;
 class IFunctionOverloadResolverImpl
 {
 public:
+    using Block = FunctionArguments;
+
     virtual ~IFunctionOverloadResolverImpl() = default;
 
     virtual String getName() const = 0;
@@ -191,6 +197,8 @@ using FunctionOverloadResolverImplPtr = std::unique_ptr<IFunctionOverloadResolve
 class IFunction
 {
 public:
+    using Block = FunctionArguments;
+
     virtual ~IFunction() = default;
 
     virtual String getName() const = 0;

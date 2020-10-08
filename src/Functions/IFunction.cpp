@@ -177,7 +177,7 @@ struct NullPresence
     bool has_null_constant = false;
 };
 
-NullPresence getNullPresense(const Block & block, const ColumnNumbers & args)
+NullPresence getNullPresense(const FunctionArguments & block, const ColumnNumbers & args)
 {
     NullPresence res;
 
@@ -209,7 +209,7 @@ NullPresence getNullPresense(const ColumnsWithTypeAndName & args)
     return res;
 }
 
-bool allArgumentsAreConstants(const Block & block, const ColumnNumbers & args)
+bool allArgumentsAreConstants(const FunctionArguments & block, const ColumnNumbers & args)
 {
     for (auto arg : args)
         if (!isColumnConst(*block.getByPosition(arg).column))
@@ -231,7 +231,7 @@ bool ExecutableFunctionAdaptor::defaultImplementationForConstantArguments(
     if (args.empty() || !impl->useDefaultImplementationForConstants() || !allArgumentsAreConstants(block, args))
         return false;
 
-    Block temporary_block;
+    DB::Block temporary_block;
     bool have_converted_columns = false;
 
     size_t arguments_size = args.size();
@@ -263,7 +263,8 @@ bool ExecutableFunctionAdaptor::defaultImplementationForConstantArguments(
     for (size_t i = 0; i < arguments_size; ++i)
         temporary_argument_numbers[i] = i;
 
-    executeWithoutLowCardinalityColumns(temporary_block, temporary_argument_numbers, arguments_size, temporary_block.rows(), dry_run);
+    FunctionArguments temporary_block_args(temporary_block);
+    executeWithoutLowCardinalityColumns(temporary_block_args, temporary_argument_numbers, arguments_size, temporary_block.rows(), dry_run);
 
     ColumnPtr result_column;
     /// extremely rare case, when we have function with completely const arguments

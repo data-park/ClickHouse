@@ -32,6 +32,19 @@ namespace ErrorCodes
 
 class Field;
 
+class FunctionArguments
+{
+public:
+    explicit FunctionArguments(Block & block_) : block(block_) {}
+
+    const ColumnWithTypeAndName & getByPosition(size_t position) const { return block.getByPosition(position); }
+    ColumnWithTypeAndName & getByPosition(size_t position) { return block.getByPosition(position); }
+    size_t columns() const { return block.columns(); }
+
+private:
+    Block & block;
+};
+
 /// The simplest executable object.
 /// Motivation:
 ///  * Prepare something heavy once before main execution loop instead of doing it for each block.
@@ -40,6 +53,8 @@ class Field;
 class IExecutableFunction
 {
 public:
+    using Block = FunctionArguments;
+
     virtual ~IExecutableFunction() = default;
 
     /// Get the main function name.
@@ -60,6 +75,8 @@ using ValuePlaceholders = std::vector<std::function<llvm::Value * ()>>;
 class IFunctionBase
 {
 public:
+    using Block = FunctionArguments;
+
     virtual ~IFunctionBase() = default;
 
     /// Get the main function name.
@@ -185,6 +202,8 @@ using FunctionBasePtr = std::shared_ptr<IFunctionBase>;
 class IFunctionOverloadResolver
 {
 public:
+    using Block = FunctionArguments;
+
     virtual ~IFunctionOverloadResolver() = default;
 
     /// Get the main function name.

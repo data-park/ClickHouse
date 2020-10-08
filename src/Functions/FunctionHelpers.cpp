@@ -51,7 +51,7 @@ Columns convertConstTupleToConstantElements(const ColumnConst & column)
 }
 
 
-static Block createBlockWithNestedColumnsImpl(const Block & block, const std::unordered_set<size_t> & args)
+static Block createBlockWithNestedColumnsImpl(const FunctionArguments & block, const std::unordered_set<size_t> & args)
 {
     Block res;
     size_t columns = block.columns();
@@ -89,13 +89,13 @@ static Block createBlockWithNestedColumnsImpl(const Block & block, const std::un
 }
 
 
-Block createBlockWithNestedColumns(const Block & block, const ColumnNumbers & args)
+Block createBlockWithNestedColumns(const FunctionArguments & block, const ColumnNumbers & args)
 {
     std::unordered_set<size_t> args_set(args.begin(), args.end());
     return createBlockWithNestedColumnsImpl(block, args_set);
 }
 
-Block createBlockWithNestedColumns(const Block & block, const ColumnNumbers & args, size_t result)
+Block createBlockWithNestedColumns(const FunctionArguments & block, const ColumnNumbers & args, size_t result)
 {
     std::unordered_set<size_t> args_set(args.begin(), args.end());
     args_set.insert(result);
