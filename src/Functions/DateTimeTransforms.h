@@ -6,6 +6,7 @@
 #include <Columns/ColumnVector.h>
 #include <Columns/ColumnDecimal.h>
 #include <Functions/FunctionHelpers.h>
+#include <Functions/IFunctionImpl.h>
 #include <Functions/extractTimeZoneFromFunctionArguments.h>
 #include <DataTypes/DataTypeDateTime.h>
 #include <DataTypes/DataTypeDateTime64.h>
