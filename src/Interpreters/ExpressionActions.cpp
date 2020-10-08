@@ -232,7 +232,7 @@ void ExpressionAction::prepare(Block & sample_block, const Settings & settings, 
             auto & res = sample_block.getByPosition(result_position);
             if (!res.column && function_base->isSuitableForConstantFolding())
             {
-                if (auto col = function_base->getResultIfAlwaysReturnsConstantAndHasArguments(sample_block, arguments))
+                if (auto col = function_base->getResultIfAlwaysReturnsConstantAndHasArguments(sample_block.getColumnsWithTypeAndName(), arguments))
                 {
                     res.column = std::move(col);
                     names_not_for_constant_folding.insert(result_name);
@@ -1611,7 +1611,7 @@ const ActionsDAG::Node & ActionsDAG::addFunction(
     /// unnecessary materialization.
     if (!node.column && node.function_base->isSuitableForConstantFolding())
     {
-        if (auto col = node.function_base->getResultIfAlwaysReturnsConstantAndHasArguments(sample_block, argument_numbers))
+        if (auto col = node.function_base->getResultIfAlwaysReturnsConstantAndHasArguments(sample_block.getColumnsWithTypeAndName(), argument_numbers))
         {
             node.column = std::move(col);
             node.allow_constant_folding = false;
