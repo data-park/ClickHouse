@@ -1284,13 +1284,15 @@ public:
             {
                 auto transform = [&](const Field & point)
                 {
-                    Block block_with_constant
+                    ColumnsWithTypeAndName block_with_constant
                         = {{left.type->createColumnConst(1, point), left.type, left.name},
                            {right.column->cloneResized(1), right.type, right.name},
                            {nullptr, return_type, ""}};
-                    Base::executeImpl(block_with_constant, {0, 1}, 2, 1);
+
+                    FunctionArguments args(block_with_constant);
+                    Base::executeImpl(args, {0, 1}, 2, 1);
                     Field point_transformed;
-                    block_with_constant.getByPosition(2).column->get(0, point_transformed);
+                    block_with_constant[2].column->get(0, point_transformed);
                     return point_transformed;
                 };
 
