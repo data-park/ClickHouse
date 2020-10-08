@@ -172,7 +172,7 @@ MutableColumnPtr ColumnAggregateFunction::predictValues(ColumnsWithTypeAndName &
         if (data.size() == 1)
         {
             /// Case for const column. Predict using single model.
-            machine_learning_function->predictValues(data[0], *res, block, 0, block.front().column->size(), arguments, context);
+            machine_learning_function->predictValues(data[0], *res, block, 0, block[arguments.front()].column->size(), arguments, context);
         }
         else
         {
