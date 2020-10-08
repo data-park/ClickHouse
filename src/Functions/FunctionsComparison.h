@@ -1048,7 +1048,7 @@ private:
                                                { nullptr, tmp_block[and_rhs_pos].type, "" }};
 
             auto func_and_adaptor = func_and->build(and_args);
-            tmp_block.emplace_back(tmp_block.size() - 1).type = func_and_adaptor->getReturnType();
+            tmp_block[tmp_block.size() - 1].type = func_and_adaptor->getReturnType();
             func_and_adaptor->execute(tmp_block, {and_lhs_pos, and_rhs_pos}, tmp_block.size() - 1, input_rows_count);
 
             size_t or_lhs_pos = tmp_block.size() - 1; // (res && `x == y`[i])
