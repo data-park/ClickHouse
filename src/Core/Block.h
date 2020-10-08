@@ -156,7 +156,7 @@ private:
     /// This is needed to allow function execution over data.
     /// It is safe because functions does not change column names, so index is unaffected.
     /// It is temporary.
-    friend class ExpressionAction;
+    friend struct ExpressionAction;
     friend class ActionsDAG;
 };
 
