@@ -24,6 +24,19 @@ namespace ErrorCodes
     extern const int NOT_IMPLEMENTED;
 }
 
+class FunctionArguments
+{
+public:
+    explicit FunctionArguments(ColumnsWithTypeAndName & arguments) : data(arguments) {}
+
+    const ColumnWithTypeAndName & getByPosition(size_t position) const { return data[position]; }
+    ColumnWithTypeAndName & getByPosition(size_t position) { return data[position]; }
+    size_t columns() const { return data.size(); }
+    const ColumnsWithTypeAndName & getColumnsWithTypeAndName() const { return data; }
+
+    ColumnsWithTypeAndName & data;
+};
+
 /// Cache for functions result if it was executed on low cardinality column.
 class ExecutableFunctionLowCardinalityResultCache;
 using ExecutableFunctionLowCardinalityResultCachePtr = std::shared_ptr<ExecutableFunctionLowCardinalityResultCache>;
@@ -109,9 +122,9 @@ public:
     virtual bool isStateful() const { return false; }
 
     virtual bool isSuitableForConstantFolding() const { return true; }
-    virtual ColumnPtr getResultIfAlwaysReturnsConstantAndHasArguments(const Block & /*block*/, const ColumnNumbers & /*arguments*/) const { return nullptr; }
+    virtual ColumnPtr getResultIfAlwaysReturnsConstantAndHasArguments(const ColumnsWithTypeAndName & /*columns*/, const ColumnNumbers & /*arguments*/) const { return nullptr; }
 
-    virtual bool isInjective(const Block & /*sample_block*/) const { return false; }
+    virtual bool isInjective(const ColumnsWithTypeAndName & /*sample_block*/) const { return false; }
     virtual bool isDeterministic() const { return true; }
     virtual bool isDeterministicInScopeOfQuery() const { return true; }
     virtual bool hasInformationAboutMonotonicity() const { return false; }
@@ -158,7 +171,7 @@ public:
     /// Properties from IFunctionOverloadResolver. See comments in IFunction.h
     virtual bool isDeterministic() const { return true; }
     virtual bool isDeterministicInScopeOfQuery() const { return true; }
-    virtual bool isInjective(const Block &) const { return false; }
+    virtual bool isInjective(const ColumnsWithTypeAndName &) const { return false; }
     virtual bool isStateful() const { return false; }
     virtual bool isVariadic() const { return false; }
 
@@ -258,8 +271,8 @@ public:
 
     /// Properties from IFunctionBase (see IFunction.h)
     virtual bool isSuitableForConstantFolding() const { return true; }
-    virtual ColumnPtr getResultIfAlwaysReturnsConstantAndHasArguments(const Block & /*block*/, const ColumnNumbers & /*arguments*/) const { return nullptr; }
-    virtual bool isInjective(const Block & /*sample_block*/) const { return false; }
+    virtual ColumnPtr getResultIfAlwaysReturnsConstantAndHasArguments(const ColumnsWithTypeAndName & /*columns*/, const ColumnNumbers & /*arguments*/) const { return nullptr; }
+    virtual bool isInjective(const ColumnsWithTypeAndName & /*sample_block*/) const { return false; }
     virtual bool isDeterministic() const { return true; }
     virtual bool isDeterministicInScopeOfQuery() const { return true; }
     virtual bool isStateful() const { return false; }
