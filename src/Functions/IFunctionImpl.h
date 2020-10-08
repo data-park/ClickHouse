@@ -58,7 +58,7 @@ private:
         if (position >= data.size())
             throw Exception("Position " + std::to_string(position)
                             + " is out of bound in FunctionArguments::safeGetByPosition(), max position = "
-                            + toString(data.size() - 1), ErrorCodes::POSITION_OUT_OF_BOUND);
+                            + std::to_string(data.size() - 1), ErrorCodes::POSITION_OUT_OF_BOUND);
     }
 };
 
