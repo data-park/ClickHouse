@@ -56,7 +56,7 @@ private:
             throw Exception("Arguments are empty", ErrorCodes::POSITION_OUT_OF_BOUND);
 
         if (position >= data.size())
-            throw Exception("Position " + toString(position)
+            throw Exception("Position " + std::to_string(position)
                             + " is out of bound in FunctionArguments::safeGetByPosition(), max position = "
                             + toString(data.size() - 1), ErrorCodes::POSITION_OUT_OF_BOUND);
     }
