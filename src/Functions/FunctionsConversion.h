@@ -441,7 +441,7 @@ struct FormatImpl<DataTypeDecimal<FieldType>>
 template <typename FieldType, typename Name>
 struct ConvertImpl<DataTypeEnum<FieldType>, DataTypeNumber<FieldType>, Name>
 {
-    static void execute(Block & block, const ColumnNumbers & arguments, size_t result, size_t /*input_rows_count*/)
+    static void execute(FunctionArguments & block, const ColumnNumbers & arguments, size_t result, size_t /*input_rows_count*/)
     {
         block.getByPosition(result).column = block.getByPosition(arguments[0]).column;
     }
