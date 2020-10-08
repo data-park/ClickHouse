@@ -60,14 +60,14 @@ public:
     using ArrayA = typename ColVecA::Container;
     using ArrayB = typename ColVecB::Container;
 
-    DecimalComparison(Block & block, size_t result, const ColumnWithTypeAndName & col_left, const ColumnWithTypeAndName & col_right)
+    DecimalComparison(FunctionArguments & block, size_t result, const ColumnWithTypeAndName & col_left, const ColumnWithTypeAndName & col_right)
     {
         if (!apply(block, result, col_left, col_right))
             throw Exception("Wrong decimal comparison with " + col_left.type->getName() + " and " + col_right.type->getName(),
                             ErrorCodes::LOGICAL_ERROR);
     }
 
-    static bool apply(Block & block, size_t result [[maybe_unused]],
+    static bool apply(FunctionArguments & block, size_t result [[maybe_unused]],
                       const ColumnWithTypeAndName & col_left, const ColumnWithTypeAndName & col_right)
     {
         if constexpr (_actual)

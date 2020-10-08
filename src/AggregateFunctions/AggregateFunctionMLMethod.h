@@ -364,7 +364,7 @@ public:
     void predictValues(
         ConstAggregateDataPtr place,
         IColumn & to,
-        Block & block,
+        ColumnsWithTypeAndName & block,
         size_t offset,
         size_t limit,
         const ColumnNumbers & arguments,
