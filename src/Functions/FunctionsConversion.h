@@ -2101,7 +2101,7 @@ private:
                 Block nested_block(nested_block_columns);
 
                 /// convert nested column
-                nested_function(nested_block, {0}, 1, col_array->size());
+                nested_function(nested_block, {0}, 1, nested_block_columns.front().column->size());
 
                 /// set converted nested column to result
                 block.getByPosition(result).column = ColumnArray::create(nested_block.getByPosition(1).column, col_array->getOffsetsPtr());
