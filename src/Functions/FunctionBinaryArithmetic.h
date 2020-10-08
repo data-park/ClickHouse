@@ -729,7 +729,7 @@ class FunctionBinaryArithmetic : public IFunction
                 {new_block.getByPosition(new_arguments[0]), new_block.getByPosition(new_arguments[1])};
         auto function = function_builder->build(new_arguments_with_type_and_name);
 
-        function->execute(new_block, new_arguments, result, input_rows_count);
+        function->execute(new_block.data, new_arguments, result, input_rows_count);
         block.getByPosition(result).column = new_block.getByPosition(result).column;
     }
 
@@ -872,7 +872,7 @@ public:
                                       col_right->getChars().data(),
                                       out_chars.data(),
                                       out_chars.size());
-                block.getByPosition(result).column = ColumnConst::create(std::move(col_res), block.rows());
+                block.getByPosition(result).column = ColumnConst::create(std::move(col_res), col_left_raw->size());
                 return true;
             }
         }
@@ -988,7 +988,7 @@ public:
 
                 col_res = ColVecResult::create(0, type.getScale());
                 auto & vec_res = col_res->getData();
-                vec_res.resize(block.rows());
+                vec_res.resize(col_left_raw->size());
 
                 if (col_left && col_right)
                 {
@@ -1032,7 +1032,7 @@ public:
 
                 col_res = ColVecResult::create();
                 auto & vec_res = col_res->getData();
-                vec_res.resize(block.rows());
+                vec_res.resize(col_left_raw->size());
 
                 if (col_left && col_right)
                 {
