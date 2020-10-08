@@ -952,7 +952,7 @@ public:
 
     static size_t getNumberOfIndexArguments(const FunctionArguments &, const ColumnNumbers & arguments) { return arguments.size() - 2; }
 
-    void prepare(const char * function_name, const Block & block, const ColumnNumbers &, size_t result_pos)
+    void prepare(const char * function_name, const FunctionArguments & block, const ColumnNumbers &, size_t result_pos)
     {
         const auto & result_type = block.getByPosition(result_pos).type;
         const auto tuple_type = typeid_cast<const DataTypeArray *>(result_type.get())->getNestedType();
